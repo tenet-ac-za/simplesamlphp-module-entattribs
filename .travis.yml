@@ -1,0 +1,18 @@
+language: php
+
+php:
+  - 5.4
+  - 5.5
+  - 5.6
+  - 7.0
+  - hhvm
+
+matrix:
+  allow_failures:
+  - php: hhvm
+
+before_script:
+  composer update --dev
+
+# hack - lets at least test syntax at this stage
+script: php -l lib/Auth/Process/AttributeFromEntity.php

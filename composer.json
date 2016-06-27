@@ -1,0 +1,14 @@
+{
+    "name": "safire-ac-za/simplesamlphp-module-entattribs",
+    "description": "SimpleSAMLphp module to convert entity attributes from metadata into attributes",
+    "type": "simplesamlphp-module",
+    "license": "BSD-2-Clause",
+    "authors": [
+        {
+            "name": "Guy Antony Halse"
+        }
+    ],
+    "require": {
+        "simplesamlphp/composer-module-installer": "^1.1"
+    }
+}
