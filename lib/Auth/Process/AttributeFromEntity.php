@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Filter to add attributes from the metadata entity attributes
+ * Filter to add SAML attributes from the metadata entity attributes
  *
  * @author Guy Halse
  * @package SimpleSAMLphp
@@ -42,11 +42,18 @@ class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth
 				if ($newName === '%skipdest' or $newName === '%destskip') {
 					array_push($this->skip, 'Destination');
 				}
-			}
-			if (is_string($origName)) {
+				/* might want to make this handle loadable maps, a`la core:AttributeMap */
+			
+			} elseif (is_string($origName)) {
 				$this->map[$origName] = $newName;
+			} else {
+				throw new SimpleSAML_Error_Exception('AttributeFromEntity: invalid config object, cannot create map');
 			}
 		}
+		
+		if (count($this->map) === 0) {
+			throw new SimpleSAML_Error_Exception('AttributeFromEntity: attribute map is empty. Config error?');
+		} 
     }
 
     /**
@@ -66,15 +73,28 @@ class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth
 		foreach (array('Source', 'Destination') as $source) {
 			if (in_array($source, $this->skip)) { continue; }
 			if (!array_key_exists('EntityAttributes', $request[$source])) { continue; }
-			foreach ($request[$source]['EntityAttributes'] as $entattrib => $value) {
-				SimpleSAML_Logger::info('entattrib: found entity attribute ' . $entattrib . ' in ' . $source . ' metadata -> ' . var_export($value, true));
-				if (array_key_exists($entattrib, $this->map)) {
-					SimpleSAML_Logger::info('entattrib: found entity attribute mapping ' . $entattrib . ' -> ' . $this->map[$entattrib]);
-					if ($this->replace === true and !in_array($this->map[$entattrib],$this->replaced)) {
-						$attributes[$this->map[$entattrib]] = array($value);
-						$this->replaced[$this->map[$entattrib]] = true;
+			
+			foreach ($request[$source]['EntityAttributes'] as $entityAttributeName => $entityAttributeValue) {
+				SimpleSAML_Logger::debug('AttributeFromEntity: found entity attribute ' . 
+					$entityAttributeName . ' in ' . $source . ' metadata -> ' . 
+					var_export($entityAttributeValue, true)
+				);
+
+				if (array_key_exists($entityAttributeName, $this->map)) {
+					SimpleSAML_Logger::info('AttributeFromEntity: found entity attribute mapping ' .
+						$entityAttributeName . ' -> ' . $this->map[$entityAttributeName]);
+
+					/* 
+					 * because we pass through this twice, we need to keep 
+					 * track of replacements we've made vs replacements of
+					 * the original SAML attributes. 
+					 */
+					if ($this->replace === true and !in_array($this->map[$entityAttributeName],$this->replaced)) {
+						$attributes[$this->map[$entityAttributeName]] = array($entityAttributeValue);
+						$this->replaced[$this->map[$entityAttributeName]] = true;
 					} else {
-						array_push($attributes[$this->map[$entattrib]], $value);
+						array_push($attributes[$this->map[$entityAttributeName]],
+							$entityAttributeValue);
 					}
 				}
 			}
