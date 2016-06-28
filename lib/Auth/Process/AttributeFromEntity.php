@@ -92,10 +92,12 @@ class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth
 					if ($this->replace === true and !in_array($this->map[$entityAttributeName],$this->replaced)) {
 						$attributes[$this->map[$entityAttributeName]] = array($entityAttributeValue);
 						$this->replaced[$this->map[$entityAttributeName]] = true;
-					} else {
-						array_push($attributes[$this->map[$entityAttributeName]],
-							$entityAttributeValue);
-					}
+					} elseif (array_key_exists($this->map[$entityAttributeName], $attributes)) {
+                        array_push($attributes[$this->map[$entityAttributeName]],
+                            $entityAttributeValue);
+                    } else {
+                        $attributes[$this->map[$entityAttributeName]] = array($entityAttributeValue);
+                    }
 				}
 			}
 		}
