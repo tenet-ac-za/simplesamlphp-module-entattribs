@@ -1,2 +1,81 @@
-# simplesaml-module-entattribs
-SimpleSAMLphp module to convert entity attributes from metadata into attributes
+entattribs:AttributeFromEntity
+==============================
+
+This SimpleSAMLphp auth proc filter allows you to provides additional
+attributes from based on entity attributes in metadata. It is useful
+when entity metadata contains definitive information that you wish
+to convert into a SAML attribute (e.g. an entity attribute containing
+the value that should be used for schacHomeOrganization in remote
+IdP metadata).
+
+Installation
+------------
+
+Once you have installed SimpleSAMLphp, installing this module is
+very simple.  Just execute the following command in the root of your
+SimpleSAMLphp installation:
+
+```
+composer.phar require safire-ac-za/simplesamlphp-module-entattribs:dev-master
+```
+
+where `dev-master` instructs Composer to install the `master` branch
+from the Git repository.
+
+Usage
+-----
+
+This module provides the entattribs:AttributeFromEntity auth proc filter,
+which can be used as follows:
+
+```php
+50 => array(
+    'class'     => 'entattribs:AttributeFromEntity',
+	'%replace',
+	'urn:x-example:schacHomeOrganization' => 'schacHomeOrganization',
+    'urn:x-example:schacHomeOrganizationType' => 'schacHomeOrganizationType',
+),
+```
+
+Where the parameters are as follows:
+
+* `class` - the name of the class, must be `entattribs:AttributeFromEntity`
+
+* `%replace` - replace the values of any existing SAML attributes with those
+   from the entity attributes. (Default is to create a multi-valued attribute.)
+
+* `%skipsource` - do not look in the source metadata for entity attributes.
+  (default is to check source metadata.)
+  
+* `%skipdest` - do not look in the destination metadata for entity attributes.
+  (default is to check destination metadata.)
+  
+Any remaining key/value pairs are used to form a map between the entity 
+attribute name (key) and the corresponding SAML attribute name to use (value).
+
+Example
+-------
+
+If the above filter were applied following remote IdP metadata:
+
+```php
+$metadata['https://idp.example.org/idp/shibboleth'] = array(
+	/* ... */
+	'EntityAttributes' => array(
+		'urn:x-example:schacHomeOrganization' => 'example.org',
+		'urn:x-example:schacHomeOrganizationType' => 'urn:schac:homeOrganizationType:int:other',
+	),
+	/* ... */
+);
+```
+
+it would result in the following attributes:
+
+```php
+$attributes = array(
+	'schacHomeOrganization' => 'example.org',
+	'schacHomeOrganizationType' => 'urn:schac:homeOrganizationType:int:other',
+);
+```
+
+and any existing values of those two attributes would have been lost/replaced.
