@@ -1,4 +1,4 @@
-entattribs:AttributeFromEntity
+entattribs:AttributeFromEntity  [![Build Status](https://travis-ci.org/safire-ac-za/simplesamlphp-module-entattribs.svg?branch=master)](https://travis-ci.org/safire-ac-za/simplesamlphp-module-entattribs)
 ==============================
 
 This SimpleSAMLphp auth proc filter allows you to provides additional
