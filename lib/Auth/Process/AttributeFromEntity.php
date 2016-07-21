@@ -3,7 +3,13 @@
 /**
  * Filter to add SAML attributes from the metadata entity attributes
  *
- * @author Guy Halse
+ * This filter allows you to extract an entity attribute and convert it into
+ * a SAML attribute for assertion. This is useful, for example, for setting 
+ * schacHomeOrganization from metadata.
+ *
+ * @author Guy Halse http://orcid.org/0000-0002-9388-8592
+ * @copyright Copyright (c) 2016, SAFIRE - South African Identity Federation
+ * @license https://github.com/safire-ac-za/simplesamlphp-module-entattribs/blob/master/LICENSE MIT License
  * @package SimpleSAMLphp
  */
 class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth_ProcessingFilter
