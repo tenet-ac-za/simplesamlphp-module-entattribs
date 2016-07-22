@@ -4,7 +4,7 @@
  * Filter to add SAML attributes from the metadata entity attributes
  *
  * This filter allows you to extract an entity attribute and convert it into
- * a SAML attribute for assertion. This is useful, for example, for setting 
+ * a SAML attribute for assertion. This is useful, for example, for setting
  * schacHomeOrganization from metadata.
  *
  * @author Guy Halse http://orcid.org/0000-0002-9388-8592
@@ -16,13 +16,13 @@ class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth
 {
     /** @var bool|false Should we replace existing attributes? */
     private $replace = false;
-    
+
     /** @var array Attributes we have already replaced */
     private $replaced = array();
-    
+
     /** @var array Should we skip looking in this metadata */
     private $skip = array();
-    
+
     /** @var array Map from Entity Attribute name to attribute name */
     private $map = array();
 
@@ -31,15 +31,16 @@ class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth
      *
      * @param array $config Configuration information about this filter.
      * @param mixed $reserved For future use.
+     * @throws SimpleSAML_Error_Exception
      */
     public function __construct($config, $reserved)
     {
         parent::__construct($config, $reserved);
         assert('is_array($config)');
 
-        foreach($config as $origName => $newName) {
+        foreach ($config as $origName => $newName) {
             if (is_int($origName)) {
-                if($newName === '%replace') {
+                if ($newName === '%replace') {
                     $this->replace = true;
                 }
                 if ($newName === '%skipsource' or $newName === '%sourceskip') {
@@ -49,17 +50,17 @@ class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth
                     array_push($this->skip, 'Destination');
                 }
                 /* might want to make this handle loadable maps, a`la core:AttributeMap */
-            
+
             } elseif (is_string($origName)) {
                 $this->map[$origName] = $newName;
             } else {
                 throw new SimpleSAML_Error_Exception('AttributeFromEntity: invalid config object, cannot create map');
             }
         }
-        
+
         if (count($this->map) === 0) {
             throw new SimpleSAML_Error_Exception('AttributeFromEntity: attribute map is empty. Config error?');
-        } 
+        }
     }
 
     /**
@@ -75,19 +76,23 @@ class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth
         assert('array_key_exists("entityid", $request["Destination"])');
 
         $attributes =& $request['Attributes'];
-                
+
         foreach (array('Source', 'Destination') as $source) {
-            if (in_array($source, $this->skip)) { continue; }
-            if (!array_key_exists('EntityAttributes', $request[$source])) { continue; }
-            
+            if (in_array($source, $this->skip)) {
+                continue;
+            }
+            if (!array_key_exists('EntityAttributes', $request[$source])) {
+                continue;
+            }
+
             foreach ($request[$source]['EntityAttributes'] as $entityAttributeName => $entityAttributeValue) {
-                SimpleSAML_Logger::debug('AttributeFromEntity: found entity attribute ' . 
-                    $entityAttributeName . ' in ' . $source . ' metadata -> ' . 
+                SimpleSAML\Logger::debug('AttributeFromEntity: found entity attribute ' .
+                    $entityAttributeName . ' in ' . $source . ' metadata -> ' .
                     var_export($entityAttributeValue, true)
                 );
 
                 if (array_key_exists($entityAttributeName, $this->map)) {
-                    SimpleSAML_Logger::info('AttributeFromEntity: found entity attribute mapping ' .
+                    SimpleSAML\Logger::info('AttributeFromEntity: found entity attribute mapping ' .
                         $entityAttributeName . ' -> ' . $this->map[$entityAttributeName]);
 
                     /* 
@@ -95,7 +100,7 @@ class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth
                      * track of replacements we've made vs replacements of
                      * the original SAML attributes. 
                      */
-                    if ($this->replace === true and !in_array($this->map[$entityAttributeName],$this->replaced)) {
+                    if ($this->replace === true and !in_array($this->map[$entityAttributeName], $this->replaced)) {
                         $attributes[$this->map[$entityAttributeName]] = array($entityAttributeValue);
                         $this->replaced[$this->map[$entityAttributeName]] = true;
                     } elseif (array_key_exists($this->map[$entityAttributeName], $attributes)) {
