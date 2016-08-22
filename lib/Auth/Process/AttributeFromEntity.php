@@ -109,21 +109,27 @@ class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth
                     SimpleSAML_Logger::info('AttributeFromEntity: found entity attribute mapping ' .
                         $entityAttributeName . ' -> ' . $this->map[$entityAttributeName]);
 
+                        if (!is_array($entityAttributeValue)) {
+                        $entityAttributeValue = array($entityAttributeValue);
+                    }
+
                     /*
                      * because we pass through this twice, we need to keep
                      * track of replacements we've made vs replacements of
                      * the original SAML attributes.
                      */
                     if ($this->replace === true and !in_array($this->map[$entityAttributeName], $this->replaced)) {
-                        $attributes[$this->map[$entityAttributeName]] = array($entityAttributeValue);
+                        $attributes[$this->map[$entityAttributeName]] = $entityAttributeValue;
                         $this->replaced[$this->map[$entityAttributeName]] = true;
                     } elseif (array_key_exists($this->map[$entityAttributeName], $attributes)) {
                         if ($this->ignore !== false) {
-                            array_push($attributes[$this->map[$entityAttributeName]],
-                                $entityAttributeValue);
+                            $attributes[$this->map[$entityAttributeName]]= array_merge(
+                                $attributes[$this->map[$entityAttributeName]],
+                                $entityAttributeValue
+                            );
                         }
                     } else {
-                        $attributes[$this->map[$entityAttributeName]] = array($entityAttributeValue);
+                        $attributes[$this->map[$entityAttributeName]] = $entityAttributeValue;
                     }
                 }
             }
