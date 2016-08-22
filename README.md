@@ -32,8 +32,8 @@ which can be used as follows:
 ```php
 50 => array(
     'class'     => 'entattribs:AttributeFromEntity',
-	'%replace',
-	'urn:x-example:schacHomeOrganization' => 'schacHomeOrganization',
+    '%replace',
+    'urn:x-example:schacHomeOrganization' => 'schacHomeOrganization',
     'urn:x-example:schacHomeOrganizationType' => 'schacHomeOrganizationType',
 ),
 ```
@@ -46,7 +46,7 @@ Where the parameters are as follows:
    from the entity attributes. (Default is to create a multi-valued attribute
    unless `%ignore` is set.)
 
-* `%ignore` - ignore any SAML attributes that already exist. (Default is to 
+* `%ignore` - ignore any SAML attributes that already exist. (Default is to
    create a multi-valued attribute unless `%replace` is set.)
 
 * `%skipsource` - do not look in the source metadata for entity attributes.
@@ -68,12 +68,12 @@ If the above filter were applied following remote IdP metadata:
 
 ```php
 $metadata['https://idp.example.org/idp/shibboleth'] = array(
-	/* ... */
-	'EntityAttributes' => array(
-		'urn:x-example:schacHomeOrganization' => 'example.org',
-		'urn:x-example:schacHomeOrganizationType' => 'urn:schac:homeOrganizationType:int:other',
-	),
-	/* ... */
+    /* ... */
+    'EntityAttributes' => array(
+        'urn:x-example:schacHomeOrganization' => 'example.org',
+        'urn:x-example:schacHomeOrganizationType' => 'urn:schac:homeOrganizationType:int:other',
+    ),
+    /* ... */
 );
 ```
 
@@ -81,8 +81,8 @@ it would result in the following attributes:
 
 ```php
 $attributes = array(
-	'schacHomeOrganization' => 'example.org',
-	'schacHomeOrganizationType' => 'urn:schac:homeOrganizationType:int:other',
+    'schacHomeOrganization' => 'example.org',
+    'schacHomeOrganizationType' => 'urn:schac:homeOrganizationType:int:other',
 );
 ```
 
