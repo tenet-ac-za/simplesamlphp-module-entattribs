@@ -17,6 +17,9 @@ class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth
     /** @var bool|false Should we replace existing attributes? */
     private $replace = false;
 
+	/** @var bool|false Should we ignore to existing attributes? */
+	private $ignore = false;
+
     /** @var array Attributes we have already replaced */
     private $replaced = array();
 
@@ -40,23 +43,34 @@ class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth
 
         foreach ($config as $origName => $newName) {
             if (is_int($origName)) {
-                if ($newName === '%replace') {
-                    $this->replace = true;
-                }
-                if ($newName === '%skipsource' or $newName === '%sourceskip') {
-                    array_push($this->skip, 'Source');
-                }
-                if ($newName === '%skipdest' or $newName === '%destskip') {
-                    array_push($this->skip, 'Destination');
-                }
-                /* might want to make this handle loadable maps, a`la core:AttributeMap */
+                switch ($newName) {
+                    case '%replace':
+                        $this->replace = true; break;
 
+                    case '%ignore':
+                        $this->ignore = true; break;
+
+                    case '%skipsource':
+                    case '%sourceskip':
+                        array_push($this->skip, 'Source'); break;
+
+                    case '%skipdest':
+                    case '%destskip':
+                        array_push($this->skip, 'Destination'); break;
+
+                    default:
+                        /* might want to make this handle loadable maps, a`la core:AttributeMap */
+                }
             } elseif (is_string($origName)) {
                 $this->map[$origName] = $newName;
             } else {
                 throw new SimpleSAML_Error_Exception('AttributeFromEntity: invalid config object, cannot create map');
             }
         }
+
+		if ($this->replace and $this->ignore) {
+			SimpleSAML\Logger::warning('AttributeFromEntity: %replace and %ignore are mutually exclusive, behaving as though only %replace was given.');
+		}
 
         if (count($this->map) === 0) {
             throw new SimpleSAML_Error_Exception('AttributeFromEntity: attribute map is empty. Config error?');
@@ -104,8 +118,10 @@ class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth
                         $attributes[$this->map[$entityAttributeName]] = array($entityAttributeValue);
                         $this->replaced[$this->map[$entityAttributeName]] = true;
                     } elseif (array_key_exists($this->map[$entityAttributeName], $attributes)) {
-                        array_push($attributes[$this->map[$entityAttributeName]],
-                            $entityAttributeValue);
+						if ($this->ignore !== false) {
+							array_push($attributes[$this->map[$entityAttributeName]],
+								$entityAttributeValue);
+						}
                     } else {
                         $attributes[$this->map[$entityAttributeName]] = array($entityAttributeValue);
                     }

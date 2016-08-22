@@ -43,7 +43,11 @@ Where the parameters are as follows:
 * `class` - the name of the class, must be _entattribs:AttributeFromEntity_
 
 * `%replace` - replace the values of any existing SAML attributes with those
-   from the entity attributes. (Default is to create a multi-valued attribute.)
+   from the entity attributes. (Default is to create a multi-valued attribute
+   unless `%ignore` is set.)
+
+* `%ignore` - ignore any SAML attributes that already exist. (Default is to 
+   create a multi-valued attribute unless `%replace` is set.)
 
 * `%skipsource` - do not look in the source metadata for entity attributes.
   (default is to check source metadata.)
@@ -53,6 +57,9 @@ Where the parameters are as follows:
 
 Any remaining key/value pairs are used to form a map between the entity
 attribute name (key) and the corresponding SAML attribute name to use (value).
+
+The parameters `%replace` and `%ignore` are intended to be mutually exclusive
+and using them together will generate a warning.
 
 Example
 -------
