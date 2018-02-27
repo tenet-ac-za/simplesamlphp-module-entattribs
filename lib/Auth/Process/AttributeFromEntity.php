@@ -69,7 +69,7 @@ class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth
         }
 
         if ($this->replace and $this->ignore) {
-            SimpleSAML_Logger::warning('AttributeFromEntity: %replace and %ignore are mutually exclusive, behaving as though only %replace was given.');
+            SimpleSAML\Logger::warning('AttributeFromEntity: %replace and %ignore are mutually exclusive, behaving as though only %replace was given.');
         }
 
         if (count($this->map) === 0) {
@@ -100,13 +100,13 @@ class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth
             }
 
             foreach ($request[$source]['EntityAttributes'] as $entityAttributeName => $entityAttributeValue) {
-                SimpleSAML_Logger::debug('AttributeFromEntity: found entity attribute ' .
+                SimpleSAML\Logger::debug('AttributeFromEntity: found entity attribute ' .
                     $entityAttributeName . ' in ' . $source . ' metadata -> ' .
                     var_export($entityAttributeValue, true)
                 );
 
                 if (array_key_exists($entityAttributeName, $this->map)) {
-                    SimpleSAML_Logger::info('AttributeFromEntity: found entity attribute mapping ' .
+                    SimpleSAML\Logger::info('AttributeFromEntity: found entity attribute mapping ' .
                         $entityAttributeName . ' -> ' . $this->map[$entityAttributeName]);
 
                         if (!is_array($entityAttributeValue)) {
