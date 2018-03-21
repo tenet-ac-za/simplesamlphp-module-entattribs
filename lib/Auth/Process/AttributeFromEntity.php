@@ -45,18 +45,22 @@ class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth
             if (is_int($origName)) {
                 switch ($newName) {
                     case '%replace':
-                        $this->replace = true; break;
+                        $this->replace = true;
+                        break;
 
                     case '%ignore':
-                        $this->ignore = true; break;
+                        $this->ignore = true;
+                        break;
 
                     case '%skipsource':
                     case '%sourceskip':
-                        array_push($this->skip, 'Source'); break;
+                        array_push($this->skip, 'Source');
+                        break;
 
                     case '%skipdest':
                     case '%destskip':
-                        array_push($this->skip, 'Destination'); break;
+                        array_push($this->skip, 'Destination');
+                        break;
 
                     default:
                         /* might want to make this handle loadable maps, a`la core:AttributeMap */
@@ -102,14 +106,13 @@ class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth
             foreach ($request[$source]['EntityAttributes'] as $entityAttributeName => $entityAttributeValue) {
                 SimpleSAML\Logger::debug('AttributeFromEntity: found entity attribute ' .
                     $entityAttributeName . ' in ' . $source . ' metadata -> ' .
-                    var_export($entityAttributeValue, true)
-                );
+                    var_export($entityAttributeValue, true));
 
                 if (array_key_exists($entityAttributeName, $this->map)) {
                     SimpleSAML\Logger::info('AttributeFromEntity: found entity attribute mapping ' .
                         $entityAttributeName . ' -> ' . $this->map[$entityAttributeName]);
 
-                        if (!is_array($entityAttributeValue)) {
+                    if (!is_array($entityAttributeValue)) {
                         $entityAttributeValue = array($entityAttributeValue);
                     }
 
