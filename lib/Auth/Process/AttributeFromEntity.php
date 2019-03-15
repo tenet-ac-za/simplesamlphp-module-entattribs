@@ -1,5 +1,7 @@
 <?php
 
+namespace SimpleSAML\Module\entattribs\Auth\Process;
+
 /**
  * Filter to add SAML attributes from the metadata entity attributes
  *
@@ -8,11 +10,11 @@
  * schacHomeOrganization from metadata.
  *
  * @author Guy Halse http://orcid.org/0000-0002-9388-8592
- * @copyright Copyright (c) 2016, SAFIRE - South African Identity Federation
+ * @copyright Copyright (c) 2019, SAFIRE - South African Identity Federation
  * @license https://github.com/safire-ac-za/simplesamlphp-module-entattribs/blob/master/LICENSE MIT License
  * @package SimpleSAMLphp
  */
-class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth_ProcessingFilter
+class AttributeFromEntity extends \SimpleSAML\Auth\ProcessingFilter
 {
     /** @var bool|false Should we replace existing attributes? */
     private $replace = false;
@@ -21,20 +23,20 @@ class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth
     private $ignore = false;
 
     /** @var array Attributes we have already replaced */
-    private $replaced = array();
+    private $replaced = [];
 
     /** @var array Should we skip looking in this metadata */
-    private $skip = array();
+    private $skip = [];
 
     /** @var array Map from Entity Attribute name to attribute name */
-    private $map = array();
+    private $map = [];
 
     /**
      * Initialize this filter, parse configuration.
      *
      * @param array $config Configuration information about this filter.
      * @param mixed $reserved For future use.
-     * @throws SimpleSAML_Error_Exception
+     * @throws \SimpleSAML\Error\Exception
      */
     public function __construct($config, $reserved)
     {
@@ -68,16 +70,16 @@ class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth
             } elseif (is_string($origName)) {
                 $this->map[$origName] = $newName;
             } else {
-                throw new SimpleSAML_Error_Exception('AttributeFromEntity: invalid config object, cannot create map');
+                throw new \SimpleSAML\Error\Exception('AttributeFromEntity: invalid config object, cannot create map');
             }
         }
 
         if ($this->replace and $this->ignore) {
-            SimpleSAML\Logger::warning('AttributeFromEntity: %replace and %ignore are mutually exclusive, behaving as though only %replace was given.');
+            \SimpleSAML\Logger::warning('AttributeFromEntity: %replace and %ignore are mutually exclusive, behaving as though only %replace was given.');
         }
 
         if (count($this->map) === 0) {
-            throw new SimpleSAML_Error_Exception('AttributeFromEntity: attribute map is empty. Config error?');
+            throw new \SimpleSAML\Error\Exception('AttributeFromEntity: attribute map is empty. Config error?');
         }
     }
 
@@ -95,7 +97,7 @@ class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth
 
         $attributes =& $request['Attributes'];
 
-        foreach (array('Source', 'Destination') as $source) {
+        foreach (['Source', 'Destination'] as $source) {
             if (in_array($source, $this->skip)) {
                 continue;
             }
@@ -104,16 +106,16 @@ class sspmod_entattribs_Auth_Process_AttributeFromEntity extends SimpleSAML_Auth
             }
 
             foreach ($request[$source]['EntityAttributes'] as $entityAttributeName => $entityAttributeValue) {
-                SimpleSAML\Logger::debug('AttributeFromEntity: found entity attribute ' .
+                \SimpleSAML\Logger::debug('AttributeFromEntity: found entity attribute ' .
                     $entityAttributeName . ' in ' . $source . ' metadata -> ' .
                     var_export($entityAttributeValue, true));
 
                 if (array_key_exists($entityAttributeName, $this->map)) {
-                    SimpleSAML\Logger::info('AttributeFromEntity: found entity attribute mapping ' .
+                    \SimpleSAML\Logger::info('AttributeFromEntity: found entity attribute mapping ' .
                         $entityAttributeName . ' -> ' . $this->map[$entityAttributeName]);
 
                     if (!is_array($entityAttributeValue)) {
-                        $entityAttributeValue = array($entityAttributeValue);
+                        $entityAttributeValue = [$entityAttributeValue];
                     }
 
                     /*

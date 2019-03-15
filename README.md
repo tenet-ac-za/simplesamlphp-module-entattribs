@@ -30,12 +30,12 @@ This module provides the _entattribs:AttributeFromEntity_ auth proc filter,
 which can be used as follows:
 
 ```php
-50 => array(
+50 => [
     'class'     => 'entattribs:AttributeFromEntity',
     '%replace',
     'urn:x-example:schacHomeOrganization' => 'schacHomeOrganization',
     'urn:x-example:schacHomeOrganizationType' => 'schacHomeOrganizationType',
-),
+],
 ```
 
 Where the parameters are as follows:
@@ -67,23 +67,23 @@ Example
 If the above filter were applied following remote IdP metadata:
 
 ```php
-$metadata['https://idp.example.org/idp/shibboleth'] = array(
+$metadata['https://idp.example.org/idp/shibboleth'] = [
     /* ... */
-    'EntityAttributes' => array(
+    'EntityAttributes' => [
         'urn:x-example:schacHomeOrganization' => 'example.org',
         'urn:x-example:schacHomeOrganizationType' => 'urn:schac:homeOrganizationType:int:other',
-    ),
+    ],
     /* ... */
-);
+];
 ```
 
 it would result in the following attributes:
 
 ```php
-$attributes = array(
+$attributes = [
     'schacHomeOrganization' => 'example.org',
     'schacHomeOrganizationType' => 'urn:schac:homeOrganizationType:int:other',
-);
+];
 ```
 
 and any existing values of those two attributes would have been lost/replaced.
