@@ -9,10 +9,10 @@ namespace SimpleSAML\Module\entattribs\Auth\Process;
  * a SAML attribute for assertion. This is useful, for example, for setting
  * schacHomeOrganization from metadata.
  *
- * @author Guy Halse http://orcid.org/0000-0002-9388-8592
+ * @author    Guy Halse, http://orcid.org/0000-0002-9388-8592
  * @copyright Copyright (c) 2019, SAFIRE - South African Identity Federation
- * @license https://github.com/safire-ac-za/simplesamlphp-module-entattribs/blob/master/LICENSE MIT License
- * @package SimpleSAMLphp
+ * @license   https://github.com/safire-ac-za/simplesamlphp-module-entattribs/blob/master/LICENSE MIT License
+ * @package   SimpleSAMLphp
  */
 class AttributeFromEntity extends \SimpleSAML\Auth\ProcessingFilter
 {
@@ -106,13 +106,17 @@ class AttributeFromEntity extends \SimpleSAML\Auth\ProcessingFilter
             }
 
             foreach ($request[$source]['EntityAttributes'] as $entityAttributeName => $entityAttributeValue) {
-                \SimpleSAML\Logger::debug('AttributeFromEntity: found entity attribute ' .
+                \SimpleSAML\Logger::debug(
+                    'AttributeFromEntity: found entity attribute ' .
                     $entityAttributeName . ' in ' . $source . ' metadata -> ' .
-                    var_export($entityAttributeValue, true));
+                    var_export($entityAttributeValue, true)
+                );
 
                 if (array_key_exists($entityAttributeName, $this->map)) {
-                    \SimpleSAML\Logger::info('AttributeFromEntity: found entity attribute mapping ' .
-                        $entityAttributeName . ' -> ' . $this->map[$entityAttributeName]);
+                    \SimpleSAML\Logger::info(
+                        'AttributeFromEntity: found entity attribute mapping ' .
+                        $entityAttributeName . ' -> ' . $this->map[$entityAttributeName]
+                    );
 
                     if (!is_array($entityAttributeValue)) {
                         $entityAttributeValue = [$entityAttributeValue];
