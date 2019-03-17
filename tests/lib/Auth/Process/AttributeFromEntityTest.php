@@ -2,12 +2,6 @@
 
 namespace SimpleSAML\Test\Module\entattribs\Auth\Process;
 
-// Alias the PHPUnit 6.0 ancestor if available, else fall back to legacy ancestor
-if (class_exists('\PHPUnit\Framework\TestCase', true) and !class_exists('\PHPUnit_Framework_TestCase', true)) {
-    class_alias('\PHPUnit\Framework\TestCase', '\PHPUnit_Framework_TestCase', true);
-}
-require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))).'/lib/Auth/Process/AttributeFromEntity.php');
-
 class AttributeFromEntity extends \PHPUnit_Framework_TestCase
 {
     /**
