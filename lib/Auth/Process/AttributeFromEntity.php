@@ -87,6 +87,7 @@ class AttributeFromEntity extends \SimpleSAML\Auth\ProcessingFilter
      * Process this filter
      *
      * @param mixed &$request
+     * @return void
      */
     public function process(&$request)
     {
