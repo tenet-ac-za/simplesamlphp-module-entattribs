@@ -41,7 +41,7 @@ class AttributeFromEntity extends \SimpleSAML\Auth\ProcessingFilter
     public function __construct($config, $reserved)
     {
         parent::__construct($config, $reserved);
-        assert('is_array($config)');
+        assert(is_array($config));
 
         foreach ($config as $origName => $newName) {
             if (is_int($origName)) {
@@ -91,10 +91,10 @@ class AttributeFromEntity extends \SimpleSAML\Auth\ProcessingFilter
      */
     public function process(&$request)
     {
-        assert('is_array($request)');
-        assert('array_key_exists("Attributes", $request)');
-        assert('array_key_exists("entityid", $request["Source"])');
-        assert('array_key_exists("entityid", $request["Destination"])');
+        assert(is_array($request));
+        assert(array_key_exists("Attributes", $request));
+        assert(array_key_exists("entityid", $request["Source"]));
+        assert(array_key_exists("entityid", $request["Destination"]));
 
         $attributes =& $request['Attributes'];
 
