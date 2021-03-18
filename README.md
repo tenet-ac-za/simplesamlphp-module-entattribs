@@ -1,7 +1,7 @@
 entattribs:AttributeFromEntity
 ==============================
-[![Build Status](https://travis-ci.org/safire-ac-za/simplesamlphp-module-entattribs.svg?branch=master)](https://travis-ci.org/safire-ac-za/simplesamlphp-module-entattribs)
-[![Coverage Status](https://img.shields.io/coveralls/safire-ac-za/simplesamlphp-module-entattribs.svg)](https://coveralls.io/r/safire-ac-za/simplesamlphp-module-entattribs)
+[![Build Status](https://travis-ci.org/tenet-ac-za/simplesamlphp-module-entattribs.svg?branch=master)](https://travis-ci.org/tenet-ac-za/simplesamlphp-module-entattribs)
+[![Coverage Status](https://img.shields.io/coveralls/tenet-ac-za/simplesamlphp-module-entattribs.svg)](https://coveralls.io/r/tenet-ac-za/simplesamlphp-module-entattribs)
 
 This SimpleSAMLphp auth proc filter allows you to provides additional
 attributes from based on entity attributes in metadata. It is useful
@@ -22,7 +22,7 @@ composer.phar require safire-ac-za/simplesamlphp-module-entattribs:dev-master
 ```
 
 where `dev-master` instructs Composer to install the `master` (**development**) branch from the Git repository. See the
-[releases](https://github.com/safire-ac-za/simplesamlphp-module-entattribs/releases)
+[releases](https://github.com/tenet-ac-za/simplesamlphp-module-entattribs/releases)
 available if you want to use a stable version of the module
 
 Usage
