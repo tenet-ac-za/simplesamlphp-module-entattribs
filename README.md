@@ -1,7 +1,7 @@
 entattribs:AttributeFromEntity
 ==============================
-[![Build Status](https://travis-ci.org/tenet-ac-za/simplesamlphp-module-entattribs.svg?branch=master)](https://travis-ci.org/tenet-ac-za/simplesamlphp-module-entattribs)
-[![Coverage Status](https://img.shields.io/coveralls/tenet-ac-za/simplesamlphp-module-entattribs.svg)](https://coveralls.io/r/tenet-ac-za/simplesamlphp-module-entattribs)
+![Build Status](https://github.com/tenet-ac-za/simplesamlphp-module-entattribs/workflows/CI/badge.svg?branch=master)
+[![Coverage Status](https://codecov.io/gh/tenet-ac-za/simplesamlphp-module-entattribs/branch/master/graph/badge.svg)](https://codecov.io/gh/tenet-ac-za/simplesamlphp-module-entattribs)
 
 This SimpleSAMLphp auth proc filter allows you to provides additional
 attributes from based on entity attributes in metadata. It is useful
