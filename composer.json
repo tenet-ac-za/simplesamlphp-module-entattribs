@@ -7,15 +7,17 @@
     "authors": [
         {
             "name": "Guy Halse",
-			"homepage": "http://orcid.org/0000-0002-9388-8592"
+            "homepage": "http://orcid.org/0000-0002-9388-8592"
         }
     ],
     "config": {
         "preferred-install": {
+            "simplesamlphp/simplesamlphp": "source",
             "*": "dist"
         },
         "sort-packages": true,
         "allow-plugins": {
+            "composer/package-versions-deprecated": true,
             "simplesamlphp/composer-module-installer": true
         }
     },
@@ -25,8 +27,9 @@
     },
     "require-dev": {
         "simplesamlphp/simplesamlphp": ">=1.19",
-        "simplesamlphp/simplesamlphp-test-framework": "~0.1.0"
+        "simplesamlphp/simplesamlphp-test-framework": "~1.1.4"
     },
+
     "autoload": {
         "psr-4": {
             "SimpleSAML\\Module\\entattribs\\": "lib/"
