@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SimpleSAML\Module\entattribs\Auth\Process;
 
 /**
@@ -89,7 +91,7 @@ class AttributeFromEntity extends \SimpleSAML\Auth\ProcessingFilter
      * @param mixed &$request
      * @return void
      */
-    public function process(&$request)
+    public function process(&$request): void
     {
         assert(is_array($request));
         assert(array_key_exists("Attributes", $request));
