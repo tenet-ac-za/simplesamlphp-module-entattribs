@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SimpleSAML\Module\entattribs\Auth\Process;
 
+use SimpleSAML\Logger;
+
 /**
  * Filter to add SAML attributes from the metadata entity attributes
  *
@@ -19,19 +21,19 @@ namespace SimpleSAML\Module\entattribs\Auth\Process;
 class AttributeFromEntity extends \SimpleSAML\Auth\ProcessingFilter
 {
     /** @var bool|false Should we replace existing attributes? */
-    private $replace = false;
+    private bool $replace = false;
 
     /** @var bool|false Should we ignore to existing attributes? */
-    private $ignore = false;
+    private bool $ignore = false;
 
     /** @var array Attributes we have already replaced */
-    private $replaced = [];
+    private array $replaced = [];
 
     /** @var array Should we skip looking in this metadata */
-    private $skip = [];
+    private array $skip = [];
 
     /** @var array Map from Entity Attribute name to attribute name */
-    private $map = [];
+    private array $map = [];
 
     /**
      * Initialize this filter, parse configuration.
@@ -40,10 +42,9 @@ class AttributeFromEntity extends \SimpleSAML\Auth\ProcessingFilter
      * @param mixed $reserved For future use.
      * @throws \SimpleSAML\Error\Exception
      */
-    public function __construct($config, $reserved)
+    public function __construct(array $config, $reserved)
     {
         parent::__construct($config, $reserved);
-        assert(is_array($config));
 
         foreach ($config as $origName => $newName) {
             if (is_int($origName)) {
@@ -77,7 +78,10 @@ class AttributeFromEntity extends \SimpleSAML\Auth\ProcessingFilter
         }
 
         if ($this->replace and $this->ignore) {
-            \SimpleSAML\Logger::warning('AttributeFromEntity: %replace and %ignore are mutually exclusive, behaving as though only %replace was given.');
+            Logger::warning(
+                'AttributeFromEntity: %replace and %ignore are mutually exclusive, '
+                . 'behaving as though only %replace was given.'
+            );
         }
 
         if (count($this->map) === 0) {
@@ -88,35 +92,34 @@ class AttributeFromEntity extends \SimpleSAML\Auth\ProcessingFilter
     /**
      * Process this filter
      *
-     * @param mixed &$request
+     * @param mixed &$state
      * @return void
      */
-    public function process(&$request): void
+    public function process(array &$state): void
     {
-        assert(is_array($request));
-        assert(array_key_exists("Attributes", $request));
-        assert(array_key_exists("entityid", $request["Source"]));
-        assert(array_key_exists("entityid", $request["Destination"]));
+        assert(array_key_exists("Attributes", $state));
+        assert(array_key_exists("entityid", $state["Source"]));
+        assert(array_key_exists("entityid", $state["Destination"]));
 
-        $attributes =& $request['Attributes'];
+        $attributes =& $state['Attributes'];
 
         foreach (['Source', 'Destination'] as $source) {
             if (in_array($source, $this->skip)) {
                 continue;
             }
-            if (!array_key_exists('EntityAttributes', $request[$source])) {
+            if (!array_key_exists('EntityAttributes', $state[$source])) {
                 continue;
             }
 
-            foreach ($request[$source]['EntityAttributes'] as $entityAttributeName => $entityAttributeValue) {
-                \SimpleSAML\Logger::debug(
+            foreach ($state[$source]['EntityAttributes'] as $entityAttributeName => $entityAttributeValue) {
+                Logger::debug(
                     'AttributeFromEntity: found entity attribute ' .
                     $entityAttributeName . ' in ' . $source . ' metadata -> ' .
                     var_export($entityAttributeValue, true)
                 );
 
                 if (array_key_exists($entityAttributeName, $this->map)) {
-                    \SimpleSAML\Logger::info(
+                    Logger::info(
                         'AttributeFromEntity: found entity attribute mapping ' .
                         $entityAttributeName . ' -> ' . $this->map[$entityAttributeName]
                     );
@@ -135,7 +138,7 @@ class AttributeFromEntity extends \SimpleSAML\Auth\ProcessingFilter
                         $this->replaced[$this->map[$entityAttributeName]] = true;
                     } elseif (array_key_exists($this->map[$entityAttributeName], $attributes)) {
                         if ($this->ignore !== true) {
-                            $attributes[$this->map[$entityAttributeName]]= array_merge(
+                            $attributes[$this->map[$entityAttributeName]] = array_merge(
                                 $attributes[$this->map[$entityAttributeName]],
                                 $entityAttributeValue
                             );

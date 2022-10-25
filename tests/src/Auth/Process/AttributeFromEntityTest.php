@@ -25,7 +25,7 @@ class AttributeFromEntity extends TestCase
         \SimpleSAML\Configuration::loadFromArray([], '[ARRAY]', 'simplesaml');
     }
 
-    public function testMerge()
+    public function testMerge(): void
     {
         $config = [
             'test-entity-attribute' => 'test-attribute',
@@ -50,7 +50,7 @@ class AttributeFromEntity extends TestCase
         $this->assertEquals($expectedData, $attributes, "Assertion values should have been merged");
     }
 
-    public function testReplace()
+    public function testReplace(): void
     {
         $config = [
             '%replace',
@@ -76,7 +76,7 @@ class AttributeFromEntity extends TestCase
         $this->assertEquals($expectedData, $attributes, "Assertion values should have been replaced");
     }
 
-    public function testIgnore()
+    public function testIgnore(): void
     {
         $config = [
             '%ignore',
