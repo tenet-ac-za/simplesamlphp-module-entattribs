@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace SimpleSAML\Test\Module\entattribs\Auth\Process;
 
 use PHPUnit\Framework\TestCase;
+use SimpleSAML\Configuration;
+use SimpleSAML\Module\entattribs\Auth\Process\AttributeFromEntity;
 
-class AttributeFromEntity extends TestCase
+class AttributeFromEntityTest extends TestCase
 {
     /**
      * Helper function to run the filter with a given configuration.
@@ -17,14 +19,14 @@ class AttributeFromEntity extends TestCase
      */
     private static function processFilter(array $config, array $request)
     {
-        $filter = new \SimpleSAML\Module\entattribs\Auth\Process\AttributeFromEntity($config, null);
+        $filter = new AttributeFromEntity($config, null);
         $filter->process($request);
         return $request;
     }
 
     protected function setUp(): void
     {
-        \SimpleSAML\Configuration::loadFromArray([], '[ARRAY]', 'simplesaml');
+        Configuration::loadFromArray([], '[ARRAY]', 'simplesaml');
     }
 
     public function testMerge(): void

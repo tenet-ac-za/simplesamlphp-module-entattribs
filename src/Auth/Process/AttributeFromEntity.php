@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace SimpleSAML\Module\entattribs\Auth\Process;
 
 use SimpleSAML\Assert\Assert;
+use SimpleSAML\Auth;
+use SimpleSAML\Error;
 use SimpleSAML\Logger;
 
 /**
@@ -19,7 +21,7 @@ use SimpleSAML\Logger;
  * @license   https://github.com/tenet-ac-za/simplesamlphp-module-entattribs/blob/master/LICENSE MIT License
  * @package   SimpleSAMLphp
  */
-class AttributeFromEntity extends \SimpleSAML\Auth\ProcessingFilter
+class AttributeFromEntity extends Auth\ProcessingFilter
 {
     /** @var bool|false Should we replace existing attributes? */
     private bool $replace = false;
@@ -74,7 +76,7 @@ class AttributeFromEntity extends \SimpleSAML\Auth\ProcessingFilter
             } elseif (is_string($origName)) {
                 $this->map[$origName] = $newName;
             } else {
-                throw new \SimpleSAML\Error\Exception('AttributeFromEntity: invalid config object, cannot create map');
+                throw new Error\Exception('AttributeFromEntity: invalid config object, cannot create map');
             }
         }
 
@@ -86,7 +88,7 @@ class AttributeFromEntity extends \SimpleSAML\Auth\ProcessingFilter
         }
 
         if (count($this->map) === 0) {
-            throw new \SimpleSAML\Error\Exception('AttributeFromEntity: attribute map is empty. Config error?');
+            throw new Error\Exception('AttributeFromEntity: attribute map is empty. Config error?');
         }
     }
 
