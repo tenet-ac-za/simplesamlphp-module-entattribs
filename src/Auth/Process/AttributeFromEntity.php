@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SimpleSAML\Module\entattribs\Auth\Process;
 
+use SimpleSAML\Assert\Assert;
 use SimpleSAML\Logger;
 
 /**
@@ -97,9 +98,11 @@ class AttributeFromEntity extends \SimpleSAML\Auth\ProcessingFilter
      */
     public function process(array &$state): void
     {
-        assert(array_key_exists("Attributes", $state));
-        assert(array_key_exists("entityid", $state["Source"]));
-        assert(array_key_exists("entityid", $state["Destination"]));
+        Assert::keyExists($state, "Attributes");
+        Assert::keyExists($state, "Source");
+        Assert::keyExists($state, "Destination");
+        Assert::keyExists($state["Source"], "entityid");
+        Assert::keyExists($state["Destination"], "entityid");
 
         $attributes =& $state['Attributes'];
 
