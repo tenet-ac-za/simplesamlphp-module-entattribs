@@ -83,7 +83,7 @@ class AttributeFromEntity extends Auth\ProcessingFilter
         if ($this->replace and $this->ignore) {
             Logger::warning(
                 'AttributeFromEntity: %replace and %ignore are mutually exclusive, '
-                . 'behaving as though only %replace was given.'
+                . 'behaving as though only %replace was given.',
             );
         }
 
@@ -120,13 +120,13 @@ class AttributeFromEntity extends Auth\ProcessingFilter
                 Logger::debug(
                     'AttributeFromEntity: found entity attribute ' .
                     $entityAttributeName . ' in ' . $source . ' metadata -> ' .
-                    var_export($entityAttributeValue, true)
+                    var_export($entityAttributeValue, true),
                 );
 
                 if (array_key_exists($entityAttributeName, $this->map)) {
                     Logger::info(
                         'AttributeFromEntity: found entity attribute mapping ' .
-                        $entityAttributeName . ' -> ' . $this->map[$entityAttributeName]
+                        $entityAttributeName . ' -> ' . $this->map[$entityAttributeName],
                     );
 
                     if (!is_array($entityAttributeValue)) {
@@ -145,7 +145,7 @@ class AttributeFromEntity extends Auth\ProcessingFilter
                         if ($this->ignore !== true) {
                             $attributes[$this->map[$entityAttributeName]] = array_merge(
                                 $attributes[$this->map[$entityAttributeName]],
-                                $entityAttributeValue
+                                $entityAttributeValue,
                             );
                         }
                     } else {
