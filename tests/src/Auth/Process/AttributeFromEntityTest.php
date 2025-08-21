@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace SimpleSAML\Test\Module\entattribs\Auth\Process;
 
-use PHPUnit\Framework\TestCase;
 use SimpleSAML\Configuration;
 use SimpleSAML\Module\entattribs\Auth\Process\AttributeFromEntity;
+use SimpleSAML\TestUtils\ClearStateTestCase;
 
-class AttributeFromEntityTest extends TestCase
+class AttributeFromEntityTest extends ClearStateTestCase
 {
     /**
      * Helper function to run the filter with a given configuration.
@@ -26,6 +26,7 @@ class AttributeFromEntityTest extends TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         Configuration::loadFromArray([], '[ARRAY]', 'simplesaml');
     }
 
