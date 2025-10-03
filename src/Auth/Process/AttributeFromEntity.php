@@ -95,7 +95,7 @@ class AttributeFromEntity extends Auth\ProcessingFilter
     /**
      * Process this filter
      *
-     * @param mixed &$state
+     * @param array<mixed> &$state
      * @return void
      */
     public function process(array &$state): void

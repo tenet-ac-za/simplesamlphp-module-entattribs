@@ -13,9 +13,9 @@ class AttributeFromEntityTest extends ClearStateTestCase
     /**
      * Helper function to run the filter with a given configuration.
      *
-     * @param  array $config The filter configuration.
-     * @param  array $request The request state.
-     * @return array  The state array after processing.
+     * @param  array<mixed> $config The filter configuration.
+     * @param  array<mixed> $request The request state.
+     * @return array<mixed>  The state array after processing.
      */
     private static function processFilter(array $config, array $request)
     {
