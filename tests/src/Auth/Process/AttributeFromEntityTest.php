@@ -24,11 +24,13 @@ class AttributeFromEntityTest extends ClearStateTestCase
         return $request;
     }
 
+
     protected function setUp(): void
     {
         parent::setUp();
         Configuration::loadFromArray([], '[ARRAY]', 'simplesaml');
     }
+
 
     public function testMerge(): void
     {
@@ -55,6 +57,7 @@ class AttributeFromEntityTest extends ClearStateTestCase
         $this->assertEquals($expectedData, $attributes, "Assertion values should have been merged");
     }
 
+
     public function testReplace(): void
     {
         $config = [
@@ -80,6 +83,7 @@ class AttributeFromEntityTest extends ClearStateTestCase
         $expectedData = ['test-attribute' => ['test-entity-attribute-value']];
         $this->assertEquals($expectedData, $attributes, "Assertion values should have been replaced");
     }
+
 
     public function testIgnore(): void
     {

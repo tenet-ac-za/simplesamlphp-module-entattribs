@@ -38,6 +38,7 @@ class AttributeFromEntity extends Auth\ProcessingFilter
     /** @var array Map from Entity Attribute name to attribute name */
     private array $map = [];
 
+
     /**
      * Initialize this filter, parse configuration.
      *
@@ -91,6 +92,7 @@ class AttributeFromEntity extends Auth\ProcessingFilter
             throw new Error\Exception('AttributeFromEntity: attribute map is empty. Config error?');
         }
     }
+
 
     /**
      * Process this filter
